@@ -9,3 +9,5 @@ class SudokuGUI:
 
     def run(self):
         self.window.mainloop()
+
+board = SudokuBoard()

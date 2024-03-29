@@ -23,3 +23,18 @@ class SudokuBoard:
             for j in range(3):
                 square.append(self.grid[i + row][j + cols].value)
         return square
+
+    def __str__(self):
+        board = ""
+        for i in range(9):
+            for j in range(9):
+                board += str(self.grid[i][j].value) + " "
+                if (j + 1) % 3 == 0 and j != 8:
+                    board += "| "
+            board += "\n"
+            if (i + 1) % 3 == 0 and i != 8:
+                board += "-" * 21 + "\n"
+        return board
+
+
+print(SudokuBoard())
