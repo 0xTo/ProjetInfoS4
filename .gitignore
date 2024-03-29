@@ -55,6 +55,10 @@ cover/
 *.mo
 *.pot
 
+# JetBrains
+*.idea
+/.idea
+
 # Django stuff:
 *.log
 local_settings.py
