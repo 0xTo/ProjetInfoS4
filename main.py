@@ -1,4 +1,4 @@
-from gui import SudokuGUI
+from gui.gui import SudokuGUI
 
 def main():
     gui = SudokuGUI()

@@ -1,5 +1,5 @@
 import tkinter as tk
-from board import SudokuBoard
+from utils.board import SudokuBoard
 
 class SudokuGUI:
     def __init__(self):
