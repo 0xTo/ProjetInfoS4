@@ -1,5 +1,8 @@
 import tkinter as tk
+
+from algo import generator
 from utils.board import SudokuBoard
+
 
 class SudokuGUI:
     def __init__(self):
@@ -10,4 +13,8 @@ class SudokuGUI:
     def run(self):
         self.window.mainloop()
 
+
 board = SudokuBoard()
+print(board)
+generator.generate(board)
+print(board)

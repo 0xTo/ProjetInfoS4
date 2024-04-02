@@ -3,15 +3,15 @@ class SudokuCell:
         self.value = value
         self.candidates = set(range(1, 10)) if value == 0 else set()
 
-        def __str__(self):
-            return str(self.value)
+    def __str__(self):
+        return str(self.value)
 
-        def changeValue(self, value):
-            self.value = value
-            self.candidates = set()
+    def changeValue(self, value):
+        self.value = value
+        self.candidates = set()
 
-        def removeCandidate(self, value):
-            self.candidates.remove(value)
+    def removeCandidate(self, value):
+        self.candidates.remove(value)
 
-        def addCandidate(self, value):
-            self.candidates.add(value)
+    def addCandidate(self, value):
+        self.candidates.add(value)
