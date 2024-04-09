@@ -58,6 +58,7 @@ cover/
 # JetBrains
 *.idea
 /.idea
+.idea
 
 # Django stuff:
 *.log
