@@ -1,5 +1,5 @@
 def solve(board):
-    # Find an empty cell
+    # Find an empty cell in the board (value = 0)
     empty_cell = find_empty_cell(board)
     if not empty_cell:
         return True  # Puzzle solved successfully

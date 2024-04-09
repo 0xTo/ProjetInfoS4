@@ -50,6 +50,7 @@ def has_unique_solution(board):
     return is_solution_unique(cloned_board, board)
 
 
+# Create a new board and copy the values from the original board
 def clone_board(board):
     cloned_board = SudokuBoard()
     for i in range(9):
