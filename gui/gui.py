@@ -167,18 +167,18 @@ class SudokuGUI:
         self.bt_moyen.destroy()
         self.bt_facile.destroy()
         self.bt_retour.destroy()
-       
+        
         self.titre = Label(self.window, text=difficulty, font="Calibri, 40", fg='Black')
         self.titre.pack(side=TOP)
        
         self.grille()
        
         self.bt_quitter = Button(self.window, text=' Quitter ', command=self.window.destroy, font="Calibri, 20", bg='Black', fg='White')
-        self.bt_quitter.place(x=1250,y=715)
+        self.bt_quitter.place(x=1240,y=715)
         self.bt_retour = Button(self.window, text=' Retour ', command=self.jouer, font="Calibri, 20", bg='Black', fg='White')
         self.bt_retour.place(x=0,y=715)
-       
-           
+        
+            
     def jouer(self):
         global x,y,w
         if y == 0:
@@ -191,7 +191,7 @@ class SudokuGUI:
             self.canvas.destroy()
             self.bt_quitter.destroy()
             self.bt_retour.destroy()
-        w=0
+        
         self.titre_difficulte = Label(self.window, text="DIFFICULTÉ", font="Calibri, 40", fg='Black')
         self.titre_difficulte.pack(side=TOP)
        
