@@ -16,20 +16,20 @@ class SudokuGUI:
         y2=y1+60
         rectangle = self.canvas.create_rectangle(x1,y1,x2,y2,outline="blue",width=5)
         w=1
-    # def selectChiffre(self, event):
-    #     global u, rectangle2
-    #     if u == 1:
-    #         self.canvas.delete(rectangle2)
-    #     a = event.x
-    #     b = event.y
-    #     c=a%60
-    #     x1=a-c
-    #     x2=x1+60
-    #     d=b%60
-    #     y1=b-d
-    #     y2=y1+60
-    #     rectangle2 = self.canvaChiffre.create_rectangle(x1,y1,x2,y2,outline="blue",width=5)
-    #     u=1
+    def selectChiffre(self, event):
+        global u, rectangle2
+        if u == 1:
+            self.canvaChiffre.delete(rectangle2)
+        a = event.x
+        b = event.y
+        c=a%60
+        x1=a-c
+        x2=x1+60
+        d=b%60
+        y1=b-d
+        y2=y1+60
+        rectangle2 = self.canvaChiffre.create_rectangle(x1,y1,x2,y2,outline="red",width=5)
+        u=1
 
     def suivant(self):
         global z
@@ -181,7 +181,7 @@ class SudokuGUI:
         for i in range(9):
             self.canvaChiffre.create_text(25, i*60 + 30, text=str(i+1), width=100, font=('Helvetica', 12, 'bold'))
             self.canvaChiffre.create_line(0,60*i,50,60*i)
-        self.canvas.bind('<Button-1>', self.selectChiffre)
+        self.canvaChiffre.bind('<Button-1>', self.selectChiffre)
 
 
     def partie(self, difficulty):
@@ -249,5 +249,6 @@ x=0
 z=0
 y=0
 w=0
+u=0
 gui = SudokuGUI()
 gui.run()
