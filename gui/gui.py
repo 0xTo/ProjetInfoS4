@@ -16,6 +16,21 @@ class SudokuGUI:
         y2=y1+60
         rectangle = self.canvas.create_rectangle(x1,y1,x2,y2,outline="blue",width=5)
         w=1
+    # def selectChiffre(self, event):
+    #     global u, rectangle2
+    #     if u == 1:
+    #         self.canvas.delete(rectangle2)
+    #     a = event.x
+    #     b = event.y
+    #     c=a%60
+    #     x1=a-c
+    #     x2=x1+60
+    #     d=b%60
+    #     y1=b-d
+    #     y2=y1+60
+    #     rectangle2 = self.canvaChiffre.create_rectangle(x1,y1,x2,y2,outline="blue",width=5)
+    #     u=1
+
     def suivant(self):
         global z
         z=1
@@ -149,8 +164,8 @@ class SudokuGUI:
         self.bt_quitter.pack(side=TOP, pady=90)
    
     def grille(self):
-        self.canvas = Canvas(self.window, width=600, height=600)
-        self.canvas.pack(side=TOP,pady=20)
+        self.canvas = Canvas(self.window, width=540, height=540)
+        self.canvas.pack(side=TOP,pady=20,padx=30)
         for i in range(10):
             if i % 3 == 0:
                 thickness = 5
@@ -159,6 +174,16 @@ class SudokuGUI:
             self.canvas.create_line(60*i, 0, 60*i, 540, fill="black", width=thickness)
             self.canvas.create_line(0, 60*i, 540, 60*i, fill="black", width=thickness)
             self.canvas.bind('<Button-1>', self.num)
+
+    def grilleChiffre(self):
+        self.canvaChiffre = Canvas(self.window, width=50, height=540)
+        self.canvaChiffre.place(x=300, y=85)
+        for i in range(9):
+            self.canvaChiffre.create_text(25, i*60 + 30, text=str(i+1), width=100, font=('Helvetica', 12, 'bold'))
+            self.canvaChiffre.create_line(0,60*i,50,60*i)
+        self.canvas.bind('<Button-1>', self.selectChiffre)
+
+
     def partie(self, difficulty):
         global y
         y=1
@@ -172,6 +197,7 @@ class SudokuGUI:
         self.titre.pack(side=TOP)
        
         self.grille()
+        self.grilleChiffre()
        
         self.bt_quitter = Button(self.window, text=' Quitter ', command=self.window.destroy, font="Calibri, 20", bg='Black', fg='White')
         self.bt_quitter.place(x=1240,y=715)
@@ -189,6 +215,7 @@ class SudokuGUI:
         elif y==1:
             self.titre.destroy()
             self.canvas.destroy()
+            self.canvaChiffre.destroy()
             self.bt_quitter.destroy()
             self.bt_retour.destroy()
         
