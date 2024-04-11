@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 class SudokuGUI:
     def num(self,event):
-        global w, rectangle
+        global w, rectangle,a,b, y1,x1,y2,x2
         if w == 1:
             self.canvas.delete(rectangle)
         a = event.x
@@ -16,20 +16,25 @@ class SudokuGUI:
         y2=y1+60
         rectangle = self.canvas.create_rectangle(x1,y1,x2,y2,outline="blue",width=5)
         w=1
+
     def selectChiffre(self, event):
-        global u, rectangle2
+        global u, rectangle2,a, b,y1,x1
         if u == 1:
             self.canvaChiffre.delete(rectangle2)
-        a = event.x
-        b = event.y
-        c=a%60
-        x1=a-c
-        x2=x1+60
-        d=b%60
-        y1=b-d
-        y2=y1+60
-        rectangle2 = self.canvaChiffre.create_rectangle(x1,y1,x2,y2,outline="red",width=5)
+        a2 = event.x
+        b2 = event.y
+        c=a2%60
+        x1C=a2-c
+        x2C=x1C+60
+        d=b2%60
+        y1C=b2-d
+        y2C=y1C+60
+        rectangle2 = self.canvaChiffre.create_rectangle(x1C,y1C,x2C,y2C,outline="red",width=5)
         u=1
+        if(a!=0 and b!=0):
+            chiffre = (y1C/60)+1
+            r = self.canvas.create_rectangle(x1+10,y1+10,x2-10,y2-10,outline='',fill="white")
+            self.canvas.create_text(x1+30,y1+30, text=int(chiffre),font=('Helvetica', 12, 'bold'))
 
     def suivant(self):
         global z
@@ -250,5 +255,7 @@ z=0
 y=0
 w=0
 u=0
+a=0
+b=0
 gui = SudokuGUI()
 gui.run()
