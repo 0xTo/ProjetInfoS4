@@ -1,6 +1,8 @@
 from tkinter import *
 
 from PIL import Image, ImageTk
+
+
 from algo import generator
 from utils.board import SudokuBoard
 
@@ -233,7 +235,9 @@ class SudokuGUI:
 
         self.grille()
         self.grilleChiffre()
-
+        board = SudokuBoard()
+        generator.generate(board)
+        print(board)
         self.bt_quitter = Button(self.window, text=' Quitter ', command=self.window.destroy, font="Calibri, 20",
                                  bg='Black', fg='White')
         self.bt_quitter.place(x=1240, y=715)
