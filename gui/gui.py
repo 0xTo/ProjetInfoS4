@@ -1,5 +1,5 @@
 from tkinter import *
-
+from tkinter import messagebox
 from PIL import Image, ImageTk
 import sys
 
@@ -26,7 +26,7 @@ class SudokuGUI:
         w = 1
 
     def selectChiffre(self, event):
-        global u, rectangle2, a, b, y1, x1
+        global u, rectangle2, a, b, y1, x1, board
         if u == 1:
             self.canvaChiffre.delete(rectangle2)
         a2 = event.x
@@ -41,9 +41,15 @@ class SudokuGUI:
         u = 1
         if (a != 0 and b != 0):
             chiffre = (y1C / 60) + 1
-            r = self.canvas.create_rectangle(x1 + 10, y1 + 10, x2 - 10, y2 - 10, outline='', fill="white")
-            self.canvas.create_text(x1 + 30, y1 + 30, text=int(chiffre), font=('Helvetica', 12, 'bold'))
+            casePosX = int(x1/60)
+            casePosY = int(y1/60)
+            numeroCase = board.getColsBoard(casePosY)[casePosX]
 
+            if numeroCase == 0:
+                r = self.canvas.create_rectangle(x1 + 10, y1 + 10, x2 - 10, y2 - 10, outline='', fill="white")
+                self.canvas.create_text(x1 + 30, y1 + 30, text=int(chiffre), font=('Helvetica', 12, 'bold'))
+            else:
+                messagebox.showinfo("Case Invalide","Cette case est déjà complétée")
     def suivant(self):
         global z
         z = 1
@@ -230,7 +236,7 @@ class SudokuGUI:
             else:
                 self.canvas.create_text(30+60*i,30+60*col, text=" ", font=('Helvetica', 12, 'bold'))
     def partie(self, difficulty):
-        global y
+        global y, board
         y = 1
         self.titre_difficulte.destroy()
         self.bt_difficile.destroy()
