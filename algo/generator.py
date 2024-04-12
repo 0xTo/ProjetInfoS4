@@ -4,13 +4,13 @@ from algo.solver import solve
 from utils.board import SudokuBoard
 
 
-def generate(board):
+def generate(board, difficulté):
 
     # Solve the empty board
     solve(board)
 
     # Select 38 random cells to keep and put them in a list
-    cells_to_keep = random.sample(range(81), 38)
+    cells_to_keep = random.sample(range(81), 36//difficulté)
 
     # Reset values to 0 for cells not in cells_to_keep
     for i in range(9):

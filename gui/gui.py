@@ -1,8 +1,9 @@
 from tkinter import *
 
 from PIL import Image, ImageTk
+import sys
 
-
+sys.path.append('..')
 from algo import generator
 from utils.board import SudokuBoard
 
@@ -202,7 +203,8 @@ class SudokuGUI:
         self.bt_quitter.pack(side=TOP, pady=90)
 
     def grille(self):
-        self.canvas = Canvas(self.window, width=540, height=540)
+        self.canvas = Canvas(self.window, width=540, height=540, bg="white")
+        global canvas
         self.canvas.pack(side=TOP, pady=20, padx=30)
         for i in range(10):
             if i % 3 == 0:
@@ -220,7 +222,13 @@ class SudokuGUI:
             self.canvaChiffre.create_text(25, i * 60 + 30, text=str(i + 1), width=100, font=('Helvetica', 12, 'bold'))
             self.canvaChiffre.create_line(0, 60 * i, 50, 60 * i)
         self.canvaChiffre.bind('<Button-1>', self.selectChiffre)
-
+    def placeChiffreRow(self,row,col):
+        global canvas
+        for i,case in enumerate(row):
+            if case != 0:
+                self.canvas.create_text(30+60*i,30+60*col, text=case, font=('Helvetica', 12, 'bold'))
+            else:
+                self.canvas.create_text(30+60*i,30+60*col, text=" ", font=('Helvetica', 12, 'bold'))
     def partie(self, difficulty):
         global y
         y = 1
@@ -235,8 +243,17 @@ class SudokuGUI:
 
         self.grille()
         self.grilleChiffre()
+        #géneration de la board
         board = SudokuBoard()
-        generator.generate(board)
+        if difficulty == "Difficile":
+            generator.generate(board,3)
+        elif difficulty == "Moyen":
+            generator.generate(board,2)
+        elif difficulty == "Facile":
+            generator.generate(board,1)
+        for i in range(9):
+            row = board.getColsBoard(i)
+            self.placeChiffreRow(row, i)
         print(board)
         self.bt_quitter = Button(self.window, text=' Quitter ', command=self.window.destroy, font="Calibri, 20",
                                  bg='Black', fg='White')
