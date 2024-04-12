@@ -1,5 +1,8 @@
 from tkinter import *
 from PIL import Image, ImageTk
+from algo import generator
+from utils.board import SudokuBoard
+
 
 class SudokuGUI:
     def num(self,event):
