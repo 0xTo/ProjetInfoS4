@@ -16,5 +16,5 @@ class SudokuGUI:
 
 board = SudokuBoard()
 print(board)
-generator.generate(board)
+generator.generate(board, 60)
 print(board)
