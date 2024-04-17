@@ -46,8 +46,8 @@ class SudokuGUI:
 
     def suivant(self):
         global z
-        z = 1
-        global photo, label_image
+        z=1
+        global photo,label_image
         self.text1.destroy()
         self.text2.destroy()
         self.text3.destroy()
@@ -56,58 +56,56 @@ class SudokuGUI:
         self.text6.destroy()
         self.text7.destroy()
         self.text8.destroy()
+        self.text9.destroy()
+        self.text10.destroy()
+        self.text11.destroy()
         self.bt_retour.destroy()
         self.bt_suivant.destroy()
         self.label_image.destroy()
-
-        self.text1 = Label(self.window, text="Utiliser le processus d'élimination", font=("Calibri", 15, "bold"),
-                           fg='Black')
-        self.text1.pack(side=TOP, anchor=SW, pady=2, padx=20)
-
-        self.text2 = Label(self.window,
-                           text="""Que voulons-nous dire en utilisant "processus d'élimination" pour jouer au Sudoku? Voici un exemple. Dans cette grille de Sudoku (illustrée ci-dessous), la colonne verticale de l'extrême gauche (encerclée en bleu) ne manque que quelques chiffres: 1, 5 et 6. """,
-                           font=("Calibri", 8), fg='Black')
-        self.text2.pack(side=TOP, anchor=SW, padx=20)
-        self.text3 = Label(self.window,
-                           text="""Une façon de déterminer quels nombres peuvent aller dans chaque espace est d'utiliser le processus d'élimination pour voir quels autres numéros sont déjà inclus dans chaque carré-car il ne peut y avoir de duplication des nombres 1-9 dans chaque carré (ou ligne ou colonne).""",
-                           font=("Calibri", 8), fg='Black')
-        self.text3.pack(side=TOP, anchor=SW, padx=20)
-
-        image = Image.open("./gui/Sudoku_im1.jpg")
+       
+        self.text1 = Label(self.window, text="Utiliser le processus d'élimination", font=("Calibri", 20, "bold"), fg='Black')
+        self.text1.pack(side=TOP,anchor=SW,pady=2,padx=15)
+       
+        self.text2 = Label(self.window, text="""Que voulons-nous dire en utilisant "processus d'élimination" pour jouer au Sudoku? Voici un exemple. Dans cette grille de Sudoku (illustrée ci-dessous), la colonne verticale de l'extrême gauche""", font=("Calibri", 13), fg='Black')
+        self.text2.pack(side=TOP,anchor=SW,padx=15)
+        self.text7 = Label(self.window, text="""(encerclée en bleu) ne manque que quelques chiffres: 1, 5 et 6. Une façon de déterminer quels nombres peuvent aller dans chaque espace est d'utiliser le processus d'élimination pour voir""", font=("Calibri", 13), fg='Black')
+        self.text7.pack(side=TOP,anchor=SW,padx=15)
+        self.text3 = Label(self.window, text="""quels autres numéros sont déjà inclus dans chaque carré-car il ne peut y avoir de duplication des nombres 1-9 dans chaque carré (ou ligne ou colonne).""", font=("Calibri", 13), fg='Black')
+        self.text3.pack(side=TOP,anchor=SW,padx=15)
+       
+       
+        image = Image.open("Sudoku_im1.jpg")
+        image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.window, image=photo)
         self.label_image.image = photo
-        self.label_image.pack(side=TOP, pady=2)
-
-        self.text4 = Label(self.window,
-                           text="""Dans ce cas, remarquons rapidement la présence du nombre 1 en haut à gauche et au centre des cases gauches de la grille (encadrés en rouge). Cela implique qu'il ne reste qu'un seul espace dans la colonne à l'extrême gauche où un 1 pourrait être placé (encadré en vert).""",
-                           font=("Calibri", 8), fg='Black')
-        self.text4.pack(side=TOP, anchor=SW, padx=20)
-        self.text5 = Label(self.window,
-                           text="""Voici comment fonctionne le processus d'élimination dans Sudoku : vous identifiez les espaces disponibles et les chiffres manquants, puis vous déduisez, en fonction de leur position dans la grille, quels chiffres peuvent être insérés dans chaque espace.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text5.pack(side=TOP, anchor=SW, padx=20)
-        self.text6 = Label(self.window,
-                           text="""Le jeu offre une infinité de variations, avec des millions de combinaisons possibles et divers niveaux de difficulté. Tout repose sur l'utilisation des chiffres, le remplissage des espaces vides par déduction et l'interdiction de répéter les chiffres dans chaque carré, ligne ou colonne.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text6.pack(side=TOP, anchor=SW, padx=20)
-
-        self.bt_suivant = Button(self.window, text=' Retour au menu ', command=self.menu, font="Calibri, 20",
-                                 bg='Black', fg='White')
-        self.bt_suivant.place(x=1140, y=715)
-        self.bt_retour = Button(self.window, text=' Retour ', command=self.regle, font="Calibri, 20", bg='Black',
-                                fg='White')
+        self.label_image.pack(side=TOP,pady=10)
+       
+        self.text4 = Label(self.window, text="""Dans ce cas, remarquons rapidement la présence du nombre 1 en haut à gauche et au centre des cases gauches de la grille (encadrés en rouge). Cela implique qu'il ne reste qu'un seul espace""", font=("Calibri", 13), fg='Black')
+        self.text4.pack(side=TOP,anchor=SW,padx=15)
+        self.text5 = Label(self.window, text="""dans la colonne à l'extrême gauche où un 1 pourrait être placé (encadré en vert). Voici comment fonctionne le processus d'élimination dans Sudoku : vous identifiez les espaces disponibles et""", font=("Calibri", 13), fg='Black')
+        self.text5.pack(side=TOP,anchor=SW,padx=15)
+        self.text6 = Label(self.window, text="""les chiffres manquants, puis vous déduisez, en fonction de leur position dans la grille, quels chiffres peuvent être insérés dans chaque espace. Le jeu offre une infinité de variations, avec des""", font=("Calibri", 13), fg='Black')
+        self.text6.pack(side=TOP,anchor=SW,padx=15)
+        self.text8 = Label(self.window, text="""millions de combinaisons possibles et divers niveaux de difficulté. Tout repose sur l'utilisation des chiffres, le remplissage des espaces vides par déduction et l'interdiction de répéter les chiffres""", font=("Calibri", 13), fg='Black')
+        self.text8.pack(side=TOP,anchor=SW,padx=15)
+        self.text9 = Label(self.window, text="""dans chaque carré, ligne ou colonne.""", font=("Calibri", 13), fg='Black')
+        self.text9.pack(side=TOP,anchor=SW,padx=15)
+       
+        self.bt_suivant = Button(self.window, text=' Retour au menu ', command=self.menu, font="Calibri, 20", bg='Black', fg='White')
+        self.bt_suivant.place(x=1140,y=715)
+        self.bt_retour = Button(self.window, text=' Retour ', command=self.regle, font="Calibri, 20", bg='Black', fg='White')
         self.bt_retour.place(x=0, y=715)
-
+       
     def regle(self):
-        global z, x
-        x = 1
-        if z == 0:
+        global z,x
+        x=1
+        if z==0:
             self.titre.destroy()
             self.bt_jouer.destroy()
             self.bt_quitter.destroy()
             self.bt_regle.destroy()
-        elif z == 1:
+        elif z==1:
             self.text1.destroy()
             self.text2.destroy()
             self.text3.destroy()
@@ -118,52 +116,47 @@ class SudokuGUI:
             self.bt_retour.destroy()
             self.bt_suivant.destroy()
             self.label_image.destroy()
-
+       
         self.titre = Label(self.window, text="Règles", font="Calibri, 40", fg='Black')
         self.titre.pack(side=TOP)
-        self.text1 = Label(self.window, text="Utilisez les numéros 1-9", font=("Calibri", 15, "bold"), fg='Black')
-        self.text1.pack(side=TOP, anchor=SW, pady=3, padx=20)
-
-        self.text2 = Label(self.window,
-                           text="""Sudoku est joué sur une grille de 9 x 9 espaces. Dans les lignes et les colonnes sont 9 "carrés" (composé de 3 x 3 espaces). Chaque rangée, colonne et carré (9 espaces chacun) doit être rempli avec les numéros 1-9, sans répéter aucun nombre dans la rangée, la colonne ou le carré.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text2.pack(side=TOP, anchor=SW, padx=20)
-        self.text3 = Label(self.window,
-                           text="""Comme sur l'image ci-dessous d'une grille de Sudoku réelle, chaque grille de Sudoku est livré avec quelques espaces déjà remplis; plus les espaces sont remplis, plus le jeu est facile, mais il y a très peu d'espaces qui sont déjà remplis.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text3.pack(side=TOP, anchor=SW, padx=20)
-
-        self.text4 = Label(self.window, text="Ne répétez aucun numéro", font=("Calibri", 15, "bold"), fg='Black')
-        self.text4.pack(side=TOP, anchor=SW, pady=3, padx=20)
-
-        image = Image.open("./gui/Sudoku_im2.jpg")
+        self.text1 = Label(self.window, text="Utilisez les numéros 1-9", font=("Calibri", 20, "bold"), fg='Black')
+        self.text1.pack(side=TOP,anchor=SW,pady=3,padx=15)
+       
+        self.text2 = Label(self.window, text="""Sudoku est joué sur une grille de 9 x 9 espaces. Dans les lignes et les colonnes sont 9 "carrés" (composé de 3 x 3 espaces). Chaque rangée, colonne et carré (9 espaces chacun) doit être rempli""", font=("Calibri", 13), fg='Black')
+        self.text2.pack(side=TOP,anchor=SW,padx=15)
+        self.text3 = Label(self.window, text="""avec les numéros 1-9, sans répéter aucun nombre dans la rangée, la colonne ou le carré. Comme sur l'image ci-dessous d'une grille de Sudoku réelle, chaque grille de Sudoku est livré avec""", font=("Calibri", 13), fg='Black')
+        self.text3.pack(side=TOP,anchor=SW,padx=15)
+        self.text9 = Label(self.window, text="""quelques espaces déjà remplis; plus les espaces sont remplis, plus le jeu est facile, mais il y a très peu d'espaces qui sont déjà remplis.""", font=("Calibri", 13), fg='Black')
+        self.text9.pack(side=TOP,anchor=SW,padx=15)
+       
+        self.text4 = Label(self.window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black')
+        self.text4.pack(side=TOP,anchor=SW,pady=3,padx=15)
+       
+        image = Image.open("Sudoku_im2.jpg")
+        image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.window, image=photo)
         self.label_image.image = photo
-        self.label_image.pack(side=TOP, pady=10)
-
-        self.text5 = Label(self.window,
-                           text="""Dans le coin supérieur gauche (encerclé en bleu), la plupart des cases sont remplies ne laissant que les chiffres 5 et 6 absents. En identifiant les chiffres manquants dans chaque carré, ligne ou colonne, nous utilisons l'élimination et la déduction pour remplir les espaces vides de la grille.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text5.pack(side=TOP, anchor=SW, padx=20)
-        self.text6 = Label(self.window,
-                           text="""Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré. Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text6.pack(side=TOP, anchor=SW, padx=20)
-
-        self.text7 = Label(self.window, text="Ne devinez pas", font=("Calibri", 15, "bold"), fg='Black')
-        self.text7.pack(side=TOP, anchor=SW, pady=3, padx=20)
-        self.text8 = Label(self.window,
-                           text="""Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré. Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""",
-                           font=("Calibri", 8), fg='Black')
-        self.text8.pack(side=TOP, anchor=SW, padx=20)
-
-        self.bt_suivant = Button(self.window, text=' Suivant ', command=self.suivant, font="Calibri, 20", bg='Black',
-                                 fg='White')
-        self.bt_suivant.place(x=1240, y=715)
-        self.bt_retour = Button(self.window, text=' Retour ', command=self.menu, font="Calibri, 20", bg='Black',
-                                fg='White')
-        self.bt_retour.place(x=0, y=715)
+        self.label_image.pack(side=TOP,pady=10)
+    
+        self.text5 = Label(self.window, text="""Dans le coin supérieur gauche (encerclé en bleu), la plupart des cases sont remplies ne laissant que les chiffres 5 et 6 absents. En identifiant les chiffres manquants dans chaque carré, ligne""", font=("Calibri", 13), fg='Black')
+        self.text5.pack(side=TOP,anchor=SW,padx=15)
+        self.text6 = Label(self.window, text="""ou colonne, nous utilisons l'élimination et la déduction pour remplir les espaces vides de la grille. Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré.""", font=("Calibri", 13), fg='Black')
+        self.text6.pack(side=TOP,anchor=SW,padx=15)
+        self.text10 = Label(self.window, text="""Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""", font=("Calibri", 13), fg='Black')
+        self.text10.pack(side=TOP,anchor=SW,padx=15)
+       
+        self.text7 = Label(self.window, text="Ne devinez pas", font=("Calibri", 20, "bold"), fg='Black')
+        self.text7.pack(side=TOP,anchor=SW,pady=3,padx=15)
+        self.text8 = Label(self.window, text="""Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré. Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons""", font=("Calibri", 13), fg='Black')
+        self.text8.pack(side=TOP,anchor=SW,padx=15)
+        self.text11 = Label(self.window, text="""donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""", font=("Calibri", 13), fg='Black')
+        self.text11.pack(side=TOP,anchor=SW,padx=15)
+       
+        self.bt_suivant = Button(self.window, text=' Suivant ', command=self.suivant, font="Calibri, 20", bg='Black', fg='White')
+        self.bt_suivant.place(x=1240,y=715)
+        self.bt_retour = Button(self.window, text=' Retour ', command=self.menu, font="Calibri, 20", bg='Black', fg='White')
+        self.bt_retour.place(x=0,y=715)
 
     def menu(self):
         global x, z, y
