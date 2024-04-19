@@ -1,7 +1,8 @@
 import tkinter as tk
 
-from algo import generator
+from algo import generator, solver
 from utils.board import SudokuBoard
+
 
 
 class SudokuGUI:
@@ -16,5 +17,6 @@ class SudokuGUI:
 
 board = SudokuBoard()
 print(board)
-generator.generate(board, 60)
+generator.generate(board, 60, timeout=0.5)
 print(board)
+solver.print_resolved_board(board)
