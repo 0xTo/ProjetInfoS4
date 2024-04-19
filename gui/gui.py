@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import sys
+import time
 
 sys.path.append('..')
 from algo import generator, solver
@@ -246,12 +247,8 @@ class SudokuGUI:
     def partie(self, difficulty):
         global y, board, boardPlayer
         y = 1
-        self.titre_difficulte.destroy()
-        self.bt_difficile.destroy()
-        self.bt_moyen.destroy()
-        self.bt_facile.destroy()
-        self.bt_retour.destroy()
-
+        self.canvas.destroy()
+        self.label.destroy()
         self.titre = Label(self.window, text=difficulty, font="Calibri, 40", fg='Black')
         self.titre.pack(side=TOP)
 
@@ -276,6 +273,40 @@ class SudokuGUI:
                                 fg='White')
         self.bt_retour.place(x=0, y=715)
 
+    def draw_loading_circle(self, x, y, radius):
+        self.canvas.delete("all")
+        self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius, outline='black', width=2)
+        self.loading_animation(x, y, radius, 0)
+
+    def loading_animation(self, x, y, radius, angle):
+        self.canvas.delete("hole")
+        angle_rad = math.radians(angle)
+        hole_x = x + radius * math.cos(angle_rad)
+        hole_y = y - radius * math.sin(angle_rad)
+        hole = self.canvas.create_oval(hole_x - 35, hole_y - 35, hole_x + 7, hole_y + 7, fill="white", outline="white", tags="hole")
+        angle += 10
+        if angle >= 360:
+            angle = angle - 360
+        self.parent.after(50, lambda: self.loading_animation(x, y, radius, angle))
+
+    def chargement(self):
+        self.titre_difficulte.destroy()
+        self.bt_difficile.destroy()
+        self.bt_moyen.destroy()
+        self.bt_facile.destroy()
+        self.bt_retour.destroy()
+
+        self.label = tk.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
+        self.label.pack(pady=20)
+
+        self.canvas = tk.Canvas(parent, width=100, height=100)
+        self.canvas.pack()
+
+        self.draw_loading_circle(50, 50, 30)
+        
+        time.sleep(10)
+        partie()
+        
     def jouer(self):
         global x, y, w
         if y == 0:
