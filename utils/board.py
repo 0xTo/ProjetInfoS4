@@ -10,7 +10,9 @@ class SudokuBoard:
         for i in range(9):
             colonne.append(self.grid[cols][i].value)
         return colonne
-
+    def getGrid(self):
+        return self.grid
+    
     def getRowBoard(self, row: int) -> list:
         ligne = []
         for i in range(9):

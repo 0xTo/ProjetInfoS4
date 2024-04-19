@@ -4,9 +4,9 @@ from PIL import Image, ImageTk
 import sys
 
 sys.path.append('..')
-from algo import generator
+from algo import generator, solver
 from utils.board import SudokuBoard
-
+from utils.cell import SudokuCell
 
 
 class SudokuGUI:
@@ -24,9 +24,18 @@ class SudokuGUI:
         y2 = y1 + 60
         rectangle = self.canvas.create_rectangle(x1, y1, x2, y2, outline="blue", width=5)
         w = 1
+    def writeNombre(self, nombre,x, y):
+        global boardPlayer
+        check =  solver.check_valid_move(boardPlayer,y,x,int(nombre))
+        tableObject = boardPlayer.getGrid()
+        tableObject[y][x].changeValue(int(nombre))
+        print(boardPlayer)
+        return check
+        
+        
 
     def selectChiffre(self, event):
-        global u, rectangle2, a, b, y1, x1, board
+        global u, rectangle2, a, b, y1, x1, board, boardPlayer
         if u == 1:
             self.canvaChiffre.delete(rectangle2)
         a2 = event.x
@@ -44,12 +53,18 @@ class SudokuGUI:
             casePosX = int(x1/60)
             casePosY = int(y1/60)
             numeroCase = board.getColsBoard(casePosY)[casePosX]
-
             if numeroCase == 0:
                 r = self.canvas.create_rectangle(x1 + 10, y1 + 10, x2 - 10, y2 - 10, outline='', fill="white")
-                self.canvas.create_text(x1 + 30, y1 + 30, text=int(chiffre), font=('Helvetica', 12, 'bold'))
+                
+                if(self.writeNombre(chiffre, casePosX, casePosY)):
+                    texte= self.canvas.create_text(x1 + 30, y1 + 30, text=int(chiffre), font=('Helvetica', 12, 'bold'), fill="green")
+                else:
+                    texte= self.canvas.create_text(x1 + 30, y1 + 30, text=int(chiffre), font=('Helvetica', 12, 'bold'), fill="red")
+                    
+            
             else:
                 messagebox.showinfo("Case Invalide","Cette case est déjà complétée")
+    
     def suivant(self):
         global z
         z = 1
@@ -236,7 +251,7 @@ class SudokuGUI:
             else:
                 self.canvas.create_text(30+60*i,30+60*col, text=" ", font=('Helvetica', 12, 'bold'))
     def partie(self, difficulty):
-        global y, board
+        global y, board, boardPlayer
         y = 1
         self.titre_difficulte.destroy()
         self.bt_difficile.destroy()
@@ -257,10 +272,10 @@ class SudokuGUI:
             generator.generate(board,2)
         elif difficulty == "Facile":
             generator.generate(board,1)
+        boardPlayer = generator.clone_board(board)
         for i in range(9):
             row = board.getColsBoard(i)
             self.placeChiffreRow(row, i)
-        print(board)
         self.bt_quitter = Button(self.window, text=' Quitter ', command=self.window.destroy, font="Calibri, 20",
                                  bg='Black', fg='White')
         self.bt_quitter.place(x=1240, y=715)
