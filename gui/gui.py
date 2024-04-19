@@ -3,6 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sys
 import time
+import math
 
 sys.path.append('..')
 from algo import generator, solver
