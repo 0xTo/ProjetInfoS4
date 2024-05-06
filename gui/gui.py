@@ -2,7 +2,7 @@ import sys
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-import time
+
 sys.path.append('..')
 from algo import generator, solver
 from utils.board import SudokuBoard
@@ -284,7 +284,7 @@ class SudokuGUI:
             generator.generate(board, 45, timeout=1.5)
         elif difficulty == "Facile":
             generator.generate(board, 60, timeout=0.75)
-        player_board = generator.clone_board(board) 
+        player_board = generator.clone_board(board)
         solution_board = generator.clone_board(board)  # Stocker la grille résolue
         solver.solve(solution_board)  # Résoudre la grille
         print("Solution:")
