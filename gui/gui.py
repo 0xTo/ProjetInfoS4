@@ -2,7 +2,8 @@ import sys
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-
+import time
+import math
 sys.path.append('..')
 from algo import generator, solver
 from utils.board import SudokuBoard
@@ -43,7 +44,7 @@ class SudokuGUI:
         return check
 
     def select_number(self, event):
-        global selected_number, rectangle_number, cell_x, cell_y, number_canvas, player_board, board
+        global selected_number, rectangle_number, cell_x, cell_y, number_canvas, player_board, board, life
         if selected_number:
             self.number_canvas.delete(rectangle_number)
         number_x = event.x
@@ -72,6 +73,15 @@ class SudokuGUI:
             else:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="red")
+                life -=1
+                self.vie.destroy()
+                self.vie = Label(self.main_window, text="vie restantes : " + str(life), font="Calibri, 20", fg='Black')
+                self.vie.pack()
+                if(life<=0):
+                    self.vie.destroy()
+                    messagebox.showinfo("YOU LOSE", "Vous êtes arrivé à court de vie")
+                    self.play()
+                    
         else:
             messagebox.showinfo("Invalid Cell", "This cell is already completed")
 
@@ -261,7 +271,9 @@ class SudokuGUI:
                 self.game_board_canvas.create_text(x, y, text=cell, font=('Helvetica', 12, 'bold'))
 
     def start_game(self, difficulty):
-        global y, board, player_board, solution_board
+        
+        global y, board, player_board, solution_board, life
+        life = 5
         y = 1
         self.difficulty_title.destroy()
         self.difficult_button.destroy()
@@ -271,7 +283,8 @@ class SudokuGUI:
 
         self.title = Label(self.main_window, text=difficulty, font="Calibri, 40", fg='Black')
         self.title.pack(side=TOP)
-
+        self.vie = Label(self.main_window, text="vie restantes : " + str(life), font="Calibri, 20", fg='Black')
+        self.vie.pack()
         self.loading_screen()  # Afficher l'écran de chargement
 
         self.create_game_board()
@@ -373,7 +386,7 @@ class SudokuGUI:
 
     def run(self):
         self.main_window.mainloop()
-
+life = 0
 page_index = 0
 z = 0
 y = 0
