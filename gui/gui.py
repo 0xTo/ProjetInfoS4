@@ -1,9 +1,10 @@
 import sys
+import threading
 from tkinter import *
 from tkinter import messagebox
-from PIL import Image, ImageTk
-import time
+
 import math
+from PIL import Image, ImageTk
 
 sys.path.append('..')
 from algo import generator, solver
@@ -65,20 +66,29 @@ class SudokuGUI:
         cell_column = int(cell_x / 60)
         cell_row = int(cell_y / 60)
         cell_value = board.getColsBoard(cell_row)[cell_column]
+        correct_number = solution_board.getColsBoard(cell_row)[cell_column]  # Obtenir le nombre correct
+
+        # Vérifier si la cellule contient déjà le numéro correct
+        if cell_value != 0 and cell_value == correct_number:
+            messagebox.showinfo("Case invalide", "Cette cellule est déjà complétée correctement")
+            return
+
         if cell_value == 0:
             cell_rectangle = self.game_board_canvas.create_rectangle(cell_x + 10, cell_y + 10, cell_width - 10,
                                                                      cell_height - 10, outline='', fill="white")
 
-            correct_number = solution_board.getColsBoard(cell_row)[cell_column]  # Obtenir le nombre correct
             if selected_number == correct_number:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="green")
+                # Mettre à jour la valeur de la cellule dans player_board
+                player_board.getColsBoard(cell_row)[cell_column] = selected_number
             else:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="red")
                 life -= 1
                 self.vie.destroy()
-                self.vie = Label(self.main_window, text="vie restantes : " + str(life), font="Calibri, 20", fg='Black')
+                self.vie = Label(self.main_window, text="Vies restantes : " + str(life), font="Calibri, 20", fg='Black',
+                                 bg="White")
                 self.vie.pack()
                 if (life <= 0):
                     self.vie.destroy()
@@ -86,7 +96,7 @@ class SudokuGUI:
                     self.play()
 
         else:
-            messagebox.showinfo("Invalid Cell", "This cell is already completed")
+            messagebox.showinfo("Case invalide", "Cette cellule est déjà complétée")
 
     def next_page(self):
         global page_index
@@ -107,20 +117,20 @@ class SudokuGUI:
         self.label_image.destroy()
 
         self.text1 = Label(self.main_window, text="Utiliser le processus d'élimination", font=("Calibri", 20, "bold"),
-                           fg='Black')
+                           fg='Black', bg="White")
         self.text1.pack(side=TOP, anchor=SW, pady=2, padx=15)
 
         self.text2 = Label(self.main_window,
                            text="""Que voulons-nous dire en utilisant "processus d'élimination" pour jouer au Sudoku? Voici un exemple. Dans cette grille de Sudoku (illustrée ci-dessous), la colonne verticale de l'extrême gauche""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text2.pack(side=TOP, anchor=SW, padx=15)
         self.text7 = Label(self.main_window,
                            text="""(encerclée en bleu) ne manque que quelques chiffres: 1, 5 et 6. Une façon de déterminer quels nombres peuvent aller dans chaque espace est d'utiliser le processus d'élimination pour voir""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text7.pack(side=TOP, anchor=SW, padx=15)
         self.text3 = Label(self.main_window,
                            text="""quels autres numéros sont déjà inclus dans chaque carré-car il ne peut y avoir de duplication des nombres 1-9 dans chaque carré (ou ligne ou colonne).""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text3.pack(side=TOP, anchor=SW, padx=15)
 
         image = Image.open("./gui/Sudoku_im1.jpg")
@@ -132,22 +142,22 @@ class SudokuGUI:
 
         self.text4 = Label(self.main_window,
                            text="""Dans ce cas, remarquons rapidement la présence du nombre 1 en haut à gauche et au centre des cases gauches de la grille (encadrés en rouge). Cela implique qu'il ne reste qu'un seul espace""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text4.pack(side=TOP, anchor=SW, padx=15)
         self.text5 = Label(self.main_window,
                            text="""dans la colonne à l'extrême gauche où un 1 pourrait être placé (encadré en vert). Voici comment fonctionne le processus d'élimination dans Sudoku : vous identifiez les espaces disponibles et""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text5.pack(side=TOP, anchor=SW, padx=15)
         self.text6 = Label(self.main_window,
                            text="""les chiffres manquants, puis vous déduisez, en fonction de leur position dans la grille, quels chiffres peuvent être insérés dans chaque espace. Le jeu offre une infinité de variations, avec des""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text6.pack(side=TOP, anchor=SW, padx=15)
         self.text8 = Label(self.main_window,
                            text="""millions de combinaisons possibles et divers niveaux de difficulté. Tout repose sur l'utilisation des chiffres, le remplissage des espaces vides par déduction et l'interdiction de répéter les chiffres""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text8.pack(side=TOP, anchor=SW, padx=15)
         self.text9 = Label(self.main_window, text="""dans chaque carré, ligne ou colonne.""", font=("Calibri", 13),
-                           fg='Black')
+                           fg='Black', bg="White")
         self.text9.pack(side=TOP, anchor=SW, padx=15)
 
         self.next_button = Button(self.main_window, text=' Retour au menu ', command=self.create_menu,
@@ -182,25 +192,25 @@ class SudokuGUI:
             self.next_button.destroy()
             self.label_image.destroy()
 
-        self.title = Label(self.main_window, text="Règles", font="Calibri, 40", fg='Black')
+        self.title = Label(self.main_window, text="Règles", font="Calibri, 40", fg='Black', bg="White")
         self.title.pack(side=TOP)
-        self.text1 = Label(self.main_window, text="Utilisez les numéros 1-9", font=("Calibri", 20, "bold"), fg='Black')
+        self.text1 = Label(self.main_window, text="Utilisez les numéros 1-9", font=("Calibri", 20, "bold"), fg='Black', bg="White")
         self.text1.pack(side=TOP, anchor=SW, pady=3, padx=15)
 
         self.text2 = Label(self.main_window,
                            text="""Sudoku est joué sur une grille de 9 x 9 espaces. Dans les lignes et les colonnes sont 9 "carrés" (composé de 3 x 3 espaces). Chaque rangée, colonne et carré (9 espaces chacun) doit être rempli""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text2.pack(side=TOP, anchor=SW, padx=15)
         self.text3 = Label(self.main_window,
                            text="""avec les numéros 1-9, sans répéter aucun nombre dans la rangée, la colonne ou le carré. Comme sur l'image ci-dessous d'une grille de Sudoku réelle, chaque grille de Sudoku est livré avec""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text3.pack(side=TOP, anchor=SW, padx=15)
         self.text7 = Label(self.main_window,
                            text="""quelques espaces déjà remplis; plus les espaces sont remplis, plus le jeu est facile, mais il y a très peu d'espaces qui sont déjà remplis.""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text7.pack(side=TOP, anchor=SW, padx=15)
 
-        self.text4 = Label(self.main_window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black')
+        self.text4 = Label(self.main_window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black', bg="White")
         self.text4.pack(side=TOP, anchor=SW, pady=3, padx=15)
 
         image = Image.open("./gui/Sudoku_im2.jpg")
@@ -212,15 +222,15 @@ class SudokuGUI:
 
         self.text5 = Label(self.main_window,
                            text="""Dans le coin supérieur gauche (encerclé en bleu), la plupart des cases sont remplies ne laissant que les chiffres 5 et 6 absents. En identifiant les chiffres manquants dans chaque carré, ligne""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text5.pack(side=TOP, anchor=SW, padx=15)
         self.text6 = Label(self.main_window,
                            text="""ou colonne, nous utilisons l'élimination et la déduction pour remplir les espaces vides de la grille. Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré.""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text6.pack(side=TOP, anchor=SW, padx=15)
         self.text8 = Label(self.main_window,
                            text="""Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""",
-                           font=("Calibri", 13), fg='Black')
+                           font=("Calibri", 13), fg='Black', bg="White")
         self.text8.pack(side=TOP, anchor=SW, padx=15)
 
         self.next_button = Button(self.main_window, text=' Continuer ', command=self.next_page, font="Calibri, 20",
@@ -257,7 +267,7 @@ class SudokuGUI:
         y = 0
         page_index = 0
 
-        self.title = Label(self.main_window, text="SUDOKU", font="Calibri, 40", fg='Black')
+        self.title = Label(self.main_window, text="SUDOKU", font="Calibri, 40", fg='Black', bg="White")
         self.title.pack(side=TOP)
 
         self.play_button = Button(self.main_window, text='  Jouer  ', command=self.play, font="Calibri, 20", bg='Black',
@@ -311,7 +321,7 @@ class SudokuGUI:
 
     def start_game(self, difficulty):
 
-        global y, board, player_board, solution_board, life
+        global y, life
         life = 5
         y = 1
         self.difficulty_title.destroy()
@@ -320,12 +330,16 @@ class SudokuGUI:
         self.easy_button.destroy()
         self.back_button.destroy()
 
-        self.title = Label(self.main_window, text=difficulty, font="Calibri, 40", fg='Black')
+        self.title = Label(self.main_window, text=difficulty, font="Calibri, 40", fg='Black', bg="White")
         self.title.pack(side=TOP)
-        self.vie = Label(self.main_window, text="vie restantes : " + str(life), font="Calibri, 20", fg='Black')
-        self.vie.pack()
-        self.loading_screen()  # Afficher l'écran de chargement
 
+        self.chargement()  # Afficher l'écran de chargement
+
+        # Utiliser le threading pour exécuter la génération de la grille en arrière-plan
+        threading.Thread(target=self.generate_board, args=(difficulty,)).start()
+
+    def generate_board(self, difficulty):
+        global board, player_board, solution_board
         self.create_game_board()
         self.create_number_canvas()
         # Board generation
@@ -353,10 +367,12 @@ class SudokuGUI:
         self.back_button = Button(self.main_window, text=' Back ', command=self.play, font="Calibri, 20", bg='Black',
                                   fg='White')
         self.back_button.place(x=0, y=715)
+        self.vie = Label(self.main_window, text="Vies restantes : " + str(life), font="Calibri, 20", fg='Black', bg="White")
+        self.vie.pack()
 
     def draw_loading_circle(self, x, y, radius):
         self.canvas.delete("all")
-        self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius, outline='black', width=2)
+        self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius, outline='Black', width=2)
         self.loading_animation(x, y, radius, 0)
 
     def loading_animation(self, x, y, radius, angle):
@@ -364,30 +380,47 @@ class SudokuGUI:
         angle_rad = math.radians(angle)
         hole_x = x + radius * math.cos(angle_rad)
         hole_y = y - radius * math.sin(angle_rad)
-        hole = self.canvas.create_oval(hole_x - 35, hole_y - 35, hole_x + 7, hole_y + 7, fill="white", outline="white",
+        hole = self.canvas.create_oval(hole_x - 35, hole_y - 35, hole_x + 7, hole_y + 7, fill="White", outline="White",
                                        tags="hole")
         angle += 10
         if angle >= 360:
             angle = angle - 360
-        self.parent.after(50, lambda: self.loading_animation(x, y, radius, angle))
+        self.loading.after(50, lambda: self.loading_animation(x, y, radius, angle))
 
     def chargement(self):
-        self.title_difficulte.destroy()
-        self.bt_difficile.destroy()
-        self.bt_moyen.destroy()
-        self.bt_facile.destroy()
-        self.back_button.destroy()
+        self.loading = Toplevel(self.main_window)
+        self.loading.title("Chargement en cours...")
+        self.loading.geometry("200x200")
+        self.loading.minsize(200, 200)  # Définir la taille minimale de la fenêtre à 200x200
+        self.loading.maxsize(200, 200)  # Définir la taille maximale de la fenêtre à 200x200
 
-        self.label = self.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
-        self.label.pack(pady=20)
-
-        self.canvas = self.Canvas(parent, width=100, height=100)
+        self.canvas = Canvas(self.loading, width=200, height=200, bg="white")
         self.canvas.pack()
 
-        self.draw_loading_circle(50, 50, 30)
+        self.radius = 50
+        self.center_x = 100
+        self.center_y = 100
+        self.angle = 0
 
-        time.sleep(10)
-        partie()
+        self.canvas.create_arc(self.center_x - self.radius, self.center_y - self.radius,
+                               self.center_x + self.radius, self.center_y + self.radius,
+                               start=0, extent=360, style=ARC, fill="Black", outline="Black",
+                               width=5)
+
+        self.canvas.create_text(100, 25, text="Chargement de la grille...", fill="Black",
+                                font=("Helvetica", 12, "bold"))  # Ajouter le style gras au texte
+
+        self.animate()
+
+    def animate(self):
+        self.angle += 10
+        self.canvas.delete("slice")
+        self.canvas.create_arc(self.center_x - self.radius, self.center_y - self.radius,
+                               self.center_x + self.radius, self.center_y + self.radius,
+                               start=self.angle, extent=50, style=CHORD, outline="black", width=10, tags="slice",
+                               fill="white")
+
+        self.loading.after(50, self.animate)
 
     def play(self):
         global page_index, y, w
@@ -404,7 +437,7 @@ class SudokuGUI:
             self.back_button.destroy()
             self.vie.destroy()
 
-        self.difficulty_title = Label(self.main_window, text="DIFFICULTÉ", font="Calibri, 40", fg='Black')
+        self.difficulty_title = Label(self.main_window, text="DIFFICULTÉ", font="Calibri, 40", fg='Black', bg="White")
         self.difficulty_title.pack(side=TOP)
 
         self.difficult_button = Button(self.main_window, text=' Difficile ',
@@ -422,13 +455,6 @@ class SudokuGUI:
                                   bg='Black', fg='White')
         self.back_button.place(x=0, y=715)
         page_index = 2
-
-    def loading_screen(self):
-        self.loading = Toplevel(self.main_window)
-        self.loading.title("Loading")
-        self.loading.geometry("200x100")
-        Label(self.loading, text="Génération de la grille...\nCela peux prendre un moment.").pack()
-        self.loading.update_idletasks()  # Mettre à jour l'interface utilisateur
 
     def run(self):
         self.main_window.mainloop()
