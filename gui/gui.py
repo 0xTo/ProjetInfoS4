@@ -1,5 +1,7 @@
+import random
 import sys
 import threading
+import time
 from tkinter import *
 from tkinter import messagebox
 
@@ -22,6 +24,18 @@ class SudokuGUI:
         self.main_window.maxsize(1366, 768)
 
         self.create_menu()
+
+    def check_board(self):
+        global player_board, solution_board, start_time
+        for i in range(9):
+            for j in range(9):
+                if player_board.getGrid()[i][j].getValue() == 0 or player_board.getGrid()[i][j].getValue() != \
+                        solution_board.getGrid()[i][j].getValue():
+                    return
+        current_time = time.time()
+        elapsed_time = int(current_time - start_time)
+        timer_text = time.strftime("%M:%S", time.gmtime(elapsed_time))
+        messagebox.showinfo("YOU WIN", "Félicitations, vous avez gagné !\nTemps écoulé : " + timer_text)
 
     def select_cell(self, event):
         global selected_cell, rectangle, cell_x, cell_y, cell_width, cell_height
@@ -71,8 +85,6 @@ class SudokuGUI:
         if cell_value != 0 and int(cell_value) == int(correct_number):
             messagebox.showinfo("Case invalide", "Cette cellule est déjà complétée")
             return
-        else:
-            print(cell_value, correct_number)
 
         if cell_value == 0:
             cell_rectangle = self.game_board_canvas.create_rectangle(cell_x + 10, cell_y + 10, cell_width - 10,
@@ -82,7 +94,7 @@ class SudokuGUI:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="green")
                 player_board.getGrid()[cell_row][cell_column].changeValue(int(selected_number))
-                print(player_board.getGrid()[cell_row][cell_column].value)
+                self.check_board()
             else:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="red")
@@ -320,11 +332,21 @@ class SudokuGUI:
             if cell != 0:
                 self.game_board_canvas.create_text(x, y, text=cell, font=('Helvetica', 12, 'bold'))
 
+    def update_timer(self):
+        global start_time, timer_label
+        current_time = time.time()
+        elapsed_time = int(current_time - start_time)
+        timer_text = time.strftime("%M:%S", time.gmtime(elapsed_time))
+        timer_label.config(text="Temps écoulé : " + timer_text)
+        timer_label.after(1000, self.update_timer)
+
     def start_game(self, difficulty):
 
         global y, life
         life = 5
         y = 1
+        start_time = 0
+
         self.difficulty_title.destroy()
         self.difficult_button.destroy()
         self.medium_button.destroy()
@@ -356,6 +378,7 @@ class SudokuGUI:
         solver.solve(solution_board)  # Résoudre la grille
         print("Solution:")
         print(solution_board)  # Afficher la grille résolue dans la console
+
         for i in range(9):
             row = board.getColsBoard(i)
             self.place_number_in_row(row, i)
@@ -370,6 +393,11 @@ class SudokuGUI:
         self.back_button.place(x=0, y=715)
         self.vie = Label(self.main_window, text="Vies restantes : " + str(life), font="Calibri, 20", fg='Black', bg="White")
         self.vie.pack()
+        global start_time, timer_label
+        start_time = time.time()
+        timer_label = Label(self.main_window, font="Calibri, 20", fg='Black', bg="White")
+        timer_label.pack()
+        self.update_timer()
 
     def draw_loading_circle(self, x, y, radius):
         self.canvas.delete("all")
