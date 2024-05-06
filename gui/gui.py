@@ -288,7 +288,7 @@ class SudokuGUI:
         angle += 10
         if angle >= 360:
             angle = angle - 360
-        self.window.after(50, lambda: self.loading_animation(x, y, radius, angle))
+        self.parent.after(50, lambda: self.loading_animation(x, y, radius, angle))
 
     def chargement(self):
         self.titre_difficulte.destroy()
@@ -297,16 +297,16 @@ class SudokuGUI:
         self.bt_facile.destroy()
         self.bt_retour.destroy()
 
-        self.label = Label(self.window, text="Chargement en cours...", font=("Helvetica", 16))
+        self.label = tk.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
         self.label.pack(pady=20)
 
-        self.canvas = Canvas(self.window, width=100, height=100)
+        self.canvas = tk.Canvas(parent, width=100, height=100)
         self.canvas.pack()
 
         self.draw_loading_circle(50, 50, 30)
         
         time.sleep(10)
-        self.partie()
+        partie()
         
     def jouer(self):
         global x, y, w
