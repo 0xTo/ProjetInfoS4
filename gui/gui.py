@@ -134,7 +134,7 @@ class SudokuGUI:
                            font=("Calibri", 13), fg='Black', bg="White")
         self.text3.pack(side=TOP, anchor=SW, padx=15)
 
-        image = Image.open("./gui/Sudoku_im1.jpg")
+        image = Image.open("Sudoku_im1.jpg")
         image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.main_window, image=photo)
@@ -214,7 +214,7 @@ class SudokuGUI:
         self.text4 = Label(self.main_window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black', bg="White")
         self.text4.pack(side=TOP, anchor=SW, pady=3, padx=15)
 
-        image = Image.open("./gui/Sudoku_im2.jpg")
+        image = Image.open("Sudoku_im2.jpg")
         image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.main_window, image=photo)
