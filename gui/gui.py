@@ -78,7 +78,9 @@ class SudokuGUI:
     def next_page(self):
         global page_index
         page_index = 1
-        global photo, image_label
+        global z
+        z = 1
+        global photo, label_image
         self.text1.destroy()
         self.text2.destroy()
         self.text3.destroy()
@@ -87,22 +89,105 @@ class SudokuGUI:
         self.text6.destroy()
         self.text7.destroy()
         self.text8.destroy()
-        self.text9.destroy()
-        self.text10.destroy()
-        self.text11.destroy()
         self.back_button.destroy()
         self.next_button.destroy()
-        self.image_label.destroy()
+        self.label_image.destroy()
+
+        self.text1 = Label(self.main_window, text="Utiliser le processus d'élimination", font=("Calibri", 20, "bold"),fg='Black')
+        self.text1.pack(side=TOP, anchor=SW, pady=2, padx=15)
+
+        self.text2 = Label(self.main_window,text="""Que voulons-nous dire en utilisant "processus d'élimination" pour jouer au Sudoku? Voici un exemple. Dans cette grille de Sudoku (illustrée ci-dessous), la colonne verticale de l'extrême gauche""",font=("Calibri", 13), fg='Black')
+        self.text2.pack(side=TOP, anchor=SW, padx=15)
+        self.text7 = Label(self.main_window,text="""(encerclée en bleu) ne manque que quelques chiffres: 1, 5 et 6. Une façon de déterminer quels nombres peuvent aller dans chaque espace est d'utiliser le processus d'élimination pour voir""",font=("Calibri", 13), fg='Black')
+        self.text7.pack(side=TOP, anchor=SW, padx=15)
+        self.text3 = Label(self.main_window,text="""quels autres numéros sont déjà inclus dans chaque carré-car il ne peut y avoir de duplication des nombres 1-9 dans chaque carré (ou ligne ou colonne).""",font=("Calibri", 13), fg='Black')
+        self.text3.pack(side=TOP, anchor=SW, padx=15)
+
+        image = Image.open("./gui/Sudoku_im1.jpg")
+        image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
+        photo = ImageTk.PhotoImage(image)
+        self.label_image = Label(self.main_window, image=photo)
+        self.label_image.image = photo
+        self.label_image.pack(side=TOP, pady=10)
+
+        self.text4 = Label(self.main_window,text="""Dans ce cas, remarquons rapidement la présence du nombre 1 en haut à gauche et au centre des cases gauches de la grille (encadrés en rouge). Cela implique qu'il ne reste qu'un seul espace""",font=("Calibri", 13), fg='Black')
+        self.text4.pack(side=TOP, anchor=SW, padx=15)
+        self.text5 = Label(self.main_window,text="""dans la colonne à l'extrême gauche où un 1 pourrait être placé (encadré en vert). Voici comment fonctionne le processus d'élimination dans Sudoku : vous identifiez les espaces disponibles et""",font=("Calibri", 13), fg='Black')
+        self.text5.pack(side=TOP, anchor=SW, padx=15)
+        self.text6 = Label(self.main_window,text="""les chiffres manquants, puis vous déduisez, en fonction de leur position dans la grille, quels chiffres peuvent être insérés dans chaque espace. Le jeu offre une infinité de variations, avec des""",font=("Calibri", 13), fg='Black')
+        self.text6.pack(side=TOP, anchor=SW, padx=15)
+        self.text8 = Label(self.main_window,text="""millions de combinaisons possibles et divers niveaux de difficulté. Tout repose sur l'utilisation des chiffres, le remplissage des espaces vides par déduction et l'interdiction de répéter les chiffres""",font=("Calibri", 13), fg='Black')
+        self.text8.pack(side=TOP, anchor=SW, padx=15)
+        self.text9 = Label(self.main_window,text="""dans chaque carré, ligne ou colonne.""", font=("Calibri", 13), fg='Black')
+        self.text9.pack(side=TOP, anchor=SW, padx=15)
+
+        self.next_button = Button(self.main_window, text=' Retour au menu ', command=self.create_menu, font="Calibri, 20",bg='Black', fg='White')
+        self.next_button.place(x=1140, y=715)
+        self.back_button = Button(self.main_window, text=' Retour ', command=self.rules_page, font="Calibri, 20", bg='Black',fg='White')
+        self.back_button.place(x=0, y=715)
 
         # Create new page elements (same as before)
 
     def rules_page(self):
-        # À faire
-        pass
+        global z, page_index
+        page_index = 1
+        if z == 0:
+            self.title.destroy()
+            self.play_button.destroy()
+            self.quit_button.destroy()
+            self.rules_button.destroy()
+        elif z == 1:
+            self.text1.destroy()
+            self.text2.destroy()
+            self.text3.destroy()
+            self.text4.destroy()
+            self.text5.destroy()
+            self.text6.destroy()
+            self.text7.destroy()
+            self.text8.destroy()
+            self.text9.destroy()
+            self.title.destroy()
+            self.back_button.destroy()
+            self.next_button.destroy()
+            self.label_image.destroy()
+
+        self.title = Label(self.main_window, text="Règles", font="Calibri, 40", fg='Black')
+        self.title.pack(side=TOP)
+        self.text1 = Label(self.main_window, text="Utilisez les numéros 1-9", font=("Calibri", 20, "bold"), fg='Black')
+        self.text1.pack(side=TOP, anchor=SW, pady=3, padx=15)
+
+        self.text2 = Label(self.main_window,text="""Sudoku est joué sur une grille de 9 x 9 espaces. Dans les lignes et les colonnes sont 9 "carrés" (composé de 3 x 3 espaces). Chaque rangée, colonne et carré (9 espaces chacun) doit être rempli""",font=("Calibri", 13), fg='Black')
+        self.text2.pack(side=TOP, anchor=SW, padx=15)
+        self.text3 = Label(self.main_window,text="""avec les numéros 1-9, sans répéter aucun nombre dans la rangée, la colonne ou le carré. Comme sur l'image ci-dessous d'une grille de Sudoku réelle, chaque grille de Sudoku est livré avec""",font=("Calibri", 13), fg='Black')
+        self.text3.pack(side=TOP, anchor=SW, padx=15)
+        self.text7 = Label(self.main_window,text="""quelques espaces déjà remplis; plus les espaces sont remplis, plus le jeu est facile, mais il y a très peu d'espaces qui sont déjà remplis.""", font=("Calibri", 13),fg='Black')
+        self.text7.pack(side=TOP, anchor=SW, padx=15)
+
+        self.text4 = Label(self.main_window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black')
+        self.text4.pack(side=TOP, anchor=SW, pady=3, padx=15)
+
+        image = Image.open("./gui/Sudoku_im2.jpg")
+        image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
+        photo = ImageTk.PhotoImage(image)
+        self.label_image = Label(self.main_window, image=photo)
+        self.label_image.image = photo
+        self.label_image.pack(side=TOP, pady=10)
+
+        self.text5 = Label(self.main_window,text="""Dans le coin supérieur gauche (encerclé en bleu), la plupart des cases sont remplies ne laissant que les chiffres 5 et 6 absents. En identifiant les chiffres manquants dans chaque carré, ligne""",font=("Calibri", 13), fg='Black')
+        self.text5.pack(side=TOP, anchor=SW, padx=15)
+        self.text6 = Label(self.main_window,text="""ou colonne, nous utilisons l'élimination et la déduction pour remplir les espaces vides de la grille. Dans le coin supérieur gauche, nous avons besoin des chiffres 5 et 6 pour finir le carré.""",font=("Calibri", 13), fg='Black')
+        self.text6.pack(side=TOP, anchor=SW, padx=15)
+        self.text8 = Label(self.main_window,text="""Mais avec la complexité des lignes et des carrés voisins, leur emplacement est incertain. Nous devons donc mettre ce coin de côté pour l'instant et remplir d'autres parties de la grille à la place.""",font=("Calibri", 13), fg='Black')
+        self.text8.pack(side=TOP, anchor=SW, padx=15)
+
+        self.next_button = Button(self.main_window, text=' Continuer ', command=self.next_page, font="Calibri, 20",bg='Black', fg='White')
+        self.next_button.place(x=1220, y=715)
+        self.back_button = Button(self.main_window, text=' Retour au menu ', command=self.create_menu, font="Calibri, 20",bg='Black', fg='White')
+        self.back_button.place(x=0, y=715)
 
     def create_menu(self):
-        global x, z, y, page_index
-        if x == 1:
+        global z, y, page_index
+        if page_index == 1:
             self.title.destroy()
             self.text1.destroy()
             self.text2.destroy()
@@ -112,10 +197,11 @@ class SudokuGUI:
             self.text6.destroy()
             self.text7.destroy()
             self.text8.destroy()
+            self.text9.destroy()
             self.back_button.destroy()
             self.next_button.destroy()
-            self.image_label.destroy()
-        elif x == 2:
+            self.label_image.destroy()
+        elif page_index == 2:
             self.difficulty_title.destroy()
             self.difficult_button.destroy()
             self.medium_button.destroy()
@@ -233,11 +319,11 @@ class SudokuGUI:
         self.parent.after(50, lambda: self.loading_animation(x, y, radius, angle))
 
     def chargement(self):
-        self.titre_difficulte.destroy()
+        self.title_difficulte.destroy()
         self.bt_difficile.destroy()
         self.bt_moyen.destroy()
         self.bt_facile.destroy()
-        self.bt_retour.destroy()
+        self.back_button.destroy()
 
         self.label = self.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
         self.label.pack(pady=20)
@@ -250,8 +336,8 @@ class SudokuGUI:
         time.sleep(10)
         partie()
         
-    def jouer(self):
-        global x, y, w
+    def play(self):
+        global page_index, y, w
         if y == 0:
             self.title.destroy()
             self.play_button.destroy()
@@ -276,7 +362,7 @@ class SudokuGUI:
 
         self.back_button = Button(self.main_window, text=' Retour ', command=self.create_menu, font="Calibri, 20", bg='Black', fg='White')
         self.back_button.place(x=0, y=715)
-        x = 2
+        page_index = 2
 
     def loading_screen(self):
         self.loading = Toplevel(self.main_window)
@@ -288,11 +374,10 @@ class SudokuGUI:
     def run(self):
         self.main_window.mainloop()
 
-x = 0
+page_index = 0
 z = 0
 y = 0
 selected_cell = False
 selected_number = False
-page_index = 0
 gui = SudokuGUI()
 gui.run()
