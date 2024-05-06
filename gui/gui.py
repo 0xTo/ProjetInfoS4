@@ -2,7 +2,7 @@ import sys
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-
+import time
 sys.path.append('..')
 from algo import generator, solver
 from utils.board import SudokuBoard
@@ -239,10 +239,10 @@ class SudokuGUI:
         self.bt_facile.destroy()
         self.bt_retour.destroy()
 
-        self.label = tk.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
+        self.label = self.Label(parent, text="Chargement en cours...", font=("Helvetica", 16))
         self.label.pack(pady=20)
 
-        self.canvas = tk.Canvas(parent, width=100, height=100)
+        self.canvas = self.Canvas(parent, width=100, height=100)
         self.canvas.pack()
 
         self.draw_loading_circle(50, 50, 30)
