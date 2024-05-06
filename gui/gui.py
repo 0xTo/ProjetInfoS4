@@ -1,7 +1,5 @@
-import random
 import sys
 import threading
-import time
 from tkinter import *
 from tkinter import messagebox
 
@@ -26,16 +24,13 @@ class SudokuGUI:
         self.create_menu()
 
     def check_board(self):
-        global player_board, solution_board, start_time
+        global player_board, solution_board
         for i in range(9):
             for j in range(9):
                 if player_board.getGrid()[i][j].getValue() == 0 or player_board.getGrid()[i][j].getValue() != \
                         solution_board.getGrid()[i][j].getValue():
                     return
-        current_time = time.time()
-        elapsed_time = int(current_time - start_time)
-        timer_text = time.strftime("%M:%S", time.gmtime(elapsed_time))
-        messagebox.showinfo("YOU WIN", "Félicitations, vous avez gagné !\nTemps écoulé : " + timer_text)
+        messagebox.showinfo("YOU WIN", "Félicitations, vous avez gagné !")
 
     def select_cell(self, event):
         global selected_cell, rectangle, cell_x, cell_y, cell_width, cell_height
@@ -146,7 +141,7 @@ class SudokuGUI:
                            font=("Calibri", 13), fg='Black', bg="White")
         self.text3.pack(side=TOP, anchor=SW, padx=15)
 
-        image = Image.open("Sudoku_im1.jpg")
+        image = Image.open("./gui/Sudoku_im1.jpg") # Dépend des systemes d'exploitation
         image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.main_window, image=photo)
@@ -179,8 +174,6 @@ class SudokuGUI:
         self.back_button = Button(self.main_window, text=' Retour ', command=self.rules_page, font="Calibri, 20",
                                   bg='Black', fg='White')
         self.back_button.place(x=0, y=715)
-
-        # Create new page elements (same as before)
 
     def rules_page(self):
         global z, page_index
@@ -226,7 +219,7 @@ class SudokuGUI:
         self.text4 = Label(self.main_window, text="Ne répétez aucun numéro", font=("Calibri", 20, "bold"), fg='Black', bg="White")
         self.text4.pack(side=TOP, anchor=SW, pady=3, padx=15)
 
-        image = Image.open("Sudoku_im2.jpg")
+        image = Image.open("./gui/Sudoku_im2.jpg") # Dépend des systemes d'exploitation
         image = image.resize((int(image.width / 1.5), int(image.height / 1.5)))
         photo = ImageTk.PhotoImage(image)
         self.label_image = Label(self.main_window, image=photo)
@@ -332,20 +325,12 @@ class SudokuGUI:
             if cell != 0:
                 self.game_board_canvas.create_text(x, y, text=cell, font=('Helvetica', 12, 'bold'))
 
-    def update_timer(self):
-        global start_time, timer_label
-        current_time = time.time()
-        elapsed_time = int(current_time - start_time)
-        timer_text = time.strftime("%M:%S", time.gmtime(elapsed_time))
-        timer_label.config(text="Temps écoulé : " + timer_text)
-        timer_label.after(1000, self.update_timer)
 
     def start_game(self, difficulty):
 
         global y, life
         life = 5
         y = 1
-        start_time = 0
 
         self.difficulty_title.destroy()
         self.difficult_button.destroy()
@@ -385,19 +370,15 @@ class SudokuGUI:
 
         self.loading.destroy()  # Fermer l'écran de chargement
 
-        self.quit_button = Button(self.main_window, text=' Quit ', command=self.main_window.destroy, font="Calibri, 20",
+        self.quit_button = Button(self.main_window, text=' Quitter ', command=self.main_window.destroy, font="Calibri, 20",
                                   bg='Black', fg='White')
         self.quit_button.place(x=1240, y=715)
-        self.back_button = Button(self.main_window, text=' Back ', command=self.play, font="Calibri, 20", bg='Black',
+        self.back_button = Button(self.main_window, text=' Retour ', command=self.play, font="Calibri, 20", bg='Black',
                                   fg='White')
         self.back_button.place(x=0, y=715)
         self.vie = Label(self.main_window, text="Vies restantes : " + str(life), font="Calibri, 20", fg='Black', bg="White")
         self.vie.pack()
-        global start_time, timer_label
-        start_time = time.time()
-        timer_label = Label(self.main_window, font="Calibri, 20", fg='Black', bg="White")
-        timer_label.pack()
-        self.update_timer()
+
 
     def draw_loading_circle(self, x, y, radius):
         self.canvas.delete("all")
@@ -495,5 +476,3 @@ z = 0
 y = 0
 selected_cell = False
 selected_number = False
-gui = SudokuGUI()
-gui.run()
