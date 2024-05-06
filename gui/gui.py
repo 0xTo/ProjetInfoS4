@@ -362,6 +362,7 @@ class SudokuGUI:
             self.number_canvas.destroy()
             self.quit_button.destroy()
             self.back_button.destroy()
+            self.vie.destroy()
 
         self.difficulty_title = Label(self.main_window, text="DIFFICULTÉ", font="Calibri, 40", fg='Black')
         self.difficulty_title.pack(side=TOP)
