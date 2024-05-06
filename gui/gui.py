@@ -65,13 +65,14 @@ class SudokuGUI:
         selected_number = (number_y / 60) + 1
         cell_column = int(cell_x / 60)
         cell_row = int(cell_y / 60)
-        cell_value = board.getColsBoard(cell_row)[cell_column]
+        cell_value = player_board.getGrid()[cell_row][cell_column].getValue()
         correct_number = solution_board.getColsBoard(cell_row)[cell_column]  # Obtenir le nombre correct
 
-        # Vérifier si la cellule contient déjà le numéro correct
-        if cell_value != 0 and cell_value == correct_number:
-            messagebox.showinfo("Case invalide", "Cette cellule est déjà complétée correctement")
+        if cell_value != 0 and int(cell_value) == int(correct_number):
+            messagebox.showinfo("Case invalide", "Cette cellule est déjà complétée")
             return
+        else:
+            print(cell_value, correct_number)
 
         if cell_value == 0:
             cell_rectangle = self.game_board_canvas.create_rectangle(cell_x + 10, cell_y + 10, cell_width - 10,
@@ -80,8 +81,8 @@ class SudokuGUI:
             if selected_number == correct_number:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="green")
-                # Mettre à jour la valeur de la cellule dans player_board
-                player_board.getColsBoard(cell_row)[cell_column] = selected_number
+                player_board.getGrid()[cell_row][cell_column].changeValue(int(selected_number))
+                print(player_board.getGrid()[cell_row][cell_column].value)
             else:
                 cell_text = self.game_board_canvas.create_text(cell_x + 30, cell_y + 30, text=int(selected_number),
                                                                font=('Helvetica', 12, 'bold'), fill="red")

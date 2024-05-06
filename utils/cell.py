@@ -6,6 +6,9 @@ class SudokuCell:
     def __str__(self):
         return str(self.value)
 
+    def getValue(self):
+        return self.value
+
     def changeValue(self, value):
         self.value = value
         self.candidates = set()
